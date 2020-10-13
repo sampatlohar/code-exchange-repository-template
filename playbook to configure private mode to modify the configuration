@@ -1,0 +1,19 @@
+---
+- name: "Configure Device" 
+  hosts: dc1
+  roles:
+    - Juniper.junos
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: "Configure op script"
+      juniper_junos_config:
+        config_mode: "private"
+        load: "set"
+        lines:
+          - "set system scripts op file bgp.slax"
+      register: response
+    - name: "Print the config changes"
+      debug:
+        var: response.diff_lines
